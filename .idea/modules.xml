@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Jebster'sDictionary.iml" filepath="$PROJECT_DIR$/Jebster'sDictionary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MobCom2Finals.iml" filepath="$PROJECT_DIR$/MobCom2Finals.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
