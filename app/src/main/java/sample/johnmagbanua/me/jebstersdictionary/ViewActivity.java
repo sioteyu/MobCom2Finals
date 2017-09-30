@@ -24,7 +24,7 @@ public class ViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        initialize();
+        offlineInitialize();
         rv = (RecyclerView)findViewById(R.id.rv);
         WordAdaptor adaptor = new WordAdaptor(words);
         rv.setAdapter(adaptor);
@@ -33,7 +33,7 @@ public class ViewActivity extends AppCompatActivity {
 
     }
 
-    public void initialize(){
+    public void offlineInitialize(){
         JSONObject wordObject = null;
         try {
             wordObject = new JSONObject(loadJSONFromAsset());
