@@ -4,12 +4,19 @@ package com.jograt.atenatics.wordplay_offlinedictionary;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.jograt.atenatics.wordplay_offlinedictionary.utility.Word;
+import com.jograt.atenatics.wordplay_offlinedictionary.utility.WordAdaptor;
+import com.jograt.atenatics.wordplay_offlinedictionary.utility.adDrawer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,12 +25,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RandomWordFragment extends Fragment {
     ProgressBar progressBar;
     TextView word;
     TextView definition;
+    List<Word> words;
+    RecyclerView rv;
     String uri = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&" +
             "maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&" +
             "api_key=1ed321800025e469d74033a1221fe952d933bcb9aa78041be";
@@ -38,7 +49,10 @@ public class RandomWordFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_random_word, container, false);
         progressBar = (ProgressBar)view.findViewById(R.id.randomProgress);
         word = (TextView)view.findViewById(R.id.randomWord);
-        definition = (TextView)view.findViewById(R.id.randomDef);
+        rv = (RecyclerView)view.findViewById(R.id.randomRv);
+
+        adDrawer draw = new adDrawer((AdView) view.findViewById(R.id.banner_AdView), new AdRequest.Builder().build());
+
         new doBackground().execute(uri);
         return view;
     }
@@ -54,13 +68,15 @@ public class RandomWordFragment extends Fragment {
             try {
                 JSONArray wordArr = new JSONArray(result);
                 word.setText(new JSONObject(wordArr.getJSONObject(0).toString()).getString("word"));
-                StringBuilder sb = new StringBuilder();
+                words = new ArrayList<Word>();
                 for(int i=0;i<wordArr.length();++i){
                     JSONObject defObj = new JSONObject(wordArr.getJSONObject(i).toString());
-                    sb.append("\n"+defObj.getString("partOfSpeech"));
-                    sb.append("\n"+defObj.getString("text"));
+                    words.add(new Word(defObj.getString("partOfSpeech"), defObj.getString("text")));
                 }
-                definition.setText(sb.toString());
+                WordAdaptor adaptor = new WordAdaptor(words);
+                rv.setAdapter(adaptor);
+                LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
+                rv.setLayoutManager(lmm);
             }catch (Exception e){
                 e.printStackTrace();
             }

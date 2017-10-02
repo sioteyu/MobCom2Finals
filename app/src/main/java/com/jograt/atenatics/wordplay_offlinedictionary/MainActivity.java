@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //get word of the day
+        setTitle("");
         WordOfTheDayFragment wordOfTheDayFragmentFragment = new WordOfTheDayFragment();
         wordOfTheDayFragmentFragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -128,16 +129,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_games) {
-
+            new Toast(this).makeText(getApplicationContext(), "Comming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_random) {
+            setTitle("");
             RandomWordFragment randomFragment = new RandomWordFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, randomFragment).commit();
         } else if(id == R.id.nav_dayword){
+            setTitle("");
             WordOfTheDayFragment wordOfTheDayFragmentFragment = new WordOfTheDayFragment();
             wordOfTheDayFragmentFragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, wordOfTheDayFragmentFragment).commit();
+        }   else if(id == R.id.nav_trivia){
+            setTitle("");
+            NumberTriviaFragment numberTriviaFragment = new NumberTriviaFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, numberTriviaFragment).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
