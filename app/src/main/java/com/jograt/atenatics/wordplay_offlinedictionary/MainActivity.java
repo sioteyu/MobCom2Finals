@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //get word of the day
-        bundle = new Bundle();
-        bundle.putString("json", getIntent().getExtras().getString("json"));
         WordOfTheDayFragment wordOfTheDayFragmentFragment = new WordOfTheDayFragment();
         wordOfTheDayFragmentFragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_all) {
+        if (id == R.id.nav_games) {
 
         } else if (id == R.id.nav_random) {
             RandomWordFragment randomFragment = new RandomWordFragment();
