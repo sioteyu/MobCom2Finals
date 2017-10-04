@@ -12,9 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jograt.atenatics.wordplay_offlinedictionary.utility.Word;
 import com.jograt.atenatics.wordplay_offlinedictionary.utility.WordAdaptor;
+import com.jograt.atenatics.wordplay_offlinedictionary.utility.adDrawer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,6 +53,7 @@ public class NumberTriviaFragment extends Fragment {
         progressBar = (ProgressBar)view.findViewById(R.id.triviaprogress);
         lv = view.findViewById(R.id.lv);
         trivia = new ArrayList<String>();
+        adDrawer draw = new adDrawer((AdView) view.findViewById(R.id.banner_AdView), new AdRequest.Builder().build());
         new doBackground().execute(uri);
         return view;
     }
@@ -63,6 +68,8 @@ public class NumberTriviaFragment extends Fragment {
             if (result.equals("online")){
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.listlayout, R.id.trivia, trivia);
                 lv.setAdapter(adapter);
+            }else{
+                new Toast(getActivity()).makeText(getActivity().getApplicationContext(),"Currently Offline, Try again", Toast.LENGTH_SHORT).show();
             }
         }
         @Override

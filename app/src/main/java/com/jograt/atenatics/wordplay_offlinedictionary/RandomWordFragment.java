@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -49,7 +50,7 @@ public class RandomWordFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_random_word, container, false);
         progressBar = (ProgressBar)view.findViewById(R.id.randomProgress);
         word = (TextView)view.findViewById(R.id.randomWord);
-        rv = (RecyclerView)view.findViewById(R.id.randomRv);
+        rv = (RecyclerView)view.findViewById(R.id.synonymRv);
 
         adDrawer draw = new adDrawer((AdView) view.findViewById(R.id.banner_AdView), new AdRequest.Builder().build());
 
@@ -65,20 +66,24 @@ public class RandomWordFragment extends Fragment {
         protected void onPostExecute(String result){
             progressBar.setVisibility(View.INVISIBLE);
 
-            try {
-                JSONArray wordArr = new JSONArray(result);
-                word.setText(new JSONObject(wordArr.getJSONObject(0).toString()).getString("word"));
-                words = new ArrayList<Word>();
-                for(int i=0;i<wordArr.length();++i){
-                    JSONObject defObj = new JSONObject(wordArr.getJSONObject(i).toString());
-                    words.add(new Word(defObj.getString("partOfSpeech"), defObj.getString("text")));
+            if (result.equals("offline")){
+                new Toast(getActivity()).makeText(getActivity().getApplicationContext(),"Currently Offline try again", Toast.LENGTH_SHORT).show();
+            }else{
+                try {
+                    JSONArray wordArr = new JSONArray(result);
+                    word.setText(new JSONObject(wordArr.getJSONObject(0).toString()).getString("word"));
+                    words = new ArrayList<Word>();
+                    for(int i=0;i<wordArr.length();++i){
+                        JSONObject defObj = new JSONObject(wordArr.getJSONObject(i).toString());
+                        words.add(new Word(defObj.getString("partOfSpeech"), defObj.getString("text")));
+                    }
+                    WordAdaptor adaptor = new WordAdaptor(words);
+                    rv.setAdapter(adaptor);
+                    LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
+                    rv.setLayoutManager(lmm);
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                WordAdaptor adaptor = new WordAdaptor(words);
-                rv.setAdapter(adaptor);
-                LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
-                rv.setLayoutManager(lmm);
-            }catch (Exception e){
-                e.printStackTrace();
             }
         }
         @Override

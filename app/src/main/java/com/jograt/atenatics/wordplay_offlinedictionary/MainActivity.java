@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
         }
     }
 
@@ -128,9 +128,10 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_games) {
-            new Toast(this).makeText(getApplicationContext(), "Comming Soon", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_random) {
+//        if (id == R.id.nav_games) {
+//            new Toast(this).makeText(getApplicationContext(), "Comming Soon", Toast.LENGTH_SHORT).show();
+//        }
+        if (id == R.id.nav_random) {
             setTitle("");
             RandomWordFragment randomFragment = new RandomWordFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -141,11 +142,16 @@ public class MainActivity extends AppCompatActivity
             wordOfTheDayFragmentFragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, wordOfTheDayFragmentFragment).commit();
-        }   else if(id == R.id.nav_trivia){
+        } else if(id == R.id.nav_trivia){
             setTitle("");
             NumberTriviaFragment numberTriviaFragment = new NumberTriviaFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, numberTriviaFragment).commit();
+        }else if(id == R.id.nav_filter){
+            setTitle("");
+            SynonymsFragment synonymsFragment = new SynonymsFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, synonymsFragment).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -53,7 +54,6 @@ public class WordOfTheDayFragment extends Fragment {
         word = (TextView) view.findViewById(R.id.wordOfTheDay);
         progressBar = (ProgressBar)view.findViewById(R.id.wordOfTheDayProgress);
         rv = (RecyclerView)view.findViewById(R.id.rvwotd);
-
         //draw ad
         adDrawer draw = new adDrawer((AdView) view.findViewById(R.id.banner_AdView), new AdRequest.Builder().build());
 
@@ -70,24 +70,28 @@ public class WordOfTheDayFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
             progressBar.setVisibility(View.INVISIBLE);
-            try {
-                JSONObject wordObj = new JSONObject(result);
-                JSONArray defArr = wordObj.getJSONArray("definitions");
+            if (result.equals("offline")){
+                new Toast(getActivity()).makeText(getActivity().getApplicationContext(),"Currently Offline, Try again", Toast.LENGTH_SHORT).show();
+            }else{
+                try {
+                    JSONObject wordObj = new JSONObject(result);
+                    JSONArray defArr = wordObj.getJSONArray("definitions");
 
-                words = new ArrayList<Word>();
+                    words = new ArrayList<Word>();
 
-                for (int i = 0; i < defArr.length(); ++i) {
-                    JSONObject defObj = new JSONObject(defArr.getJSONObject(i).toString());
-                    words.add(new Word(defObj.getString("partOfSpeech"), defObj.getString("text")));
+                    for (int i = 0; i < defArr.length(); ++i) {
+                        JSONObject defObj = new JSONObject(defArr.getJSONObject(i).toString());
+                        words.add(new Word(defObj.getString("partOfSpeech"), defObj.getString("text")));
+                    }
+                    WordAdaptor adaptor = new WordAdaptor(words);
+                    rv.setAdapter(adaptor);
+                    LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
+                    rv.setLayoutManager(lmm);
+                    //set word
+                    word.setText(wordObj.getString("word"));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                WordAdaptor adaptor = new WordAdaptor(words);
-                rv.setAdapter(adaptor);
-                LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
-                rv.setLayoutManager(lmm);
-                //set word
-                word.setText(wordObj.getString("word"));
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         @Override

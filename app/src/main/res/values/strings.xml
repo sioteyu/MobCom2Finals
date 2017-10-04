@@ -3,9 +3,14 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="ad_id_banner">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_banner">ca-app-pub-7442329123714606/8607729633</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="choice_array">
+        <item>Related To</item>
+        <item>Sounds Like</item>
+        <item>Spelled Similar</item>
+        <item>Rhymes With</item>
+    </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

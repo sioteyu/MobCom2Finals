@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_dayword"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Word of the Day" />
-        <item
-            android:id="@+id/nav_games"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Games" />
-        <item
-            android:id="@+id/nav_random"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Random Word" />
-        <item
-            android:id="@+id/nav_trivia"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Number Trivia" />
-    </group>
-
+    <item android:title="Only Available Online">
+        <menu>
+            <item
+                android:id="@+id/nav_dayword"
+                android:icon="@drawable/ic_whatshot_black_24dp"
+                android:title="Word of the Day" />
+            <!--<item-->
+            <!--android:id="@+id/nav_games"-->
+            <!--android:icon="@drawable/ic_videogame_asset_black_24dp"-->
+            <!--android:title="Games" />-->
+            <item
+                android:id="@+id/nav_random"
+                android:icon="@drawable/ic_shuffle_black_24dp"
+                android:title="Random Word" />
+            <item
+                android:id="@+id/nav_trivia"
+                android:icon="@drawable/ic_poll_black_24dp"
+                android:title="Number Trivia" />
+            <item
+                android:id="@+id/nav_filter"
+                android:icon="@drawable/ic_find_in_page_black_24dp"
+                android:title="Find Rhymes and More" />
+        </menu>
+    </item>
 </menu>

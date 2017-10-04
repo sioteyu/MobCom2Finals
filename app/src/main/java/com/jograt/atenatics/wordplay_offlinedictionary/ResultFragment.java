@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -38,7 +39,6 @@ import java.util.List;
 public class ResultFragment extends Fragment {
     String uri;
     TextView word;
-    TextView definition;
     ProgressBar progressBar;
     List<Word> words;
     RecyclerView rv;
@@ -77,14 +77,20 @@ public class ResultFragment extends Fragment {
         protected void onPostExecute(String result){
             if(result.equals("offline")){
                 try{
+                    words = new ArrayList<Word>();
                     JSONObject obj = new JSONObject(loadJSONFromAsset());
-                    definition.setText(obj.getString(word.getText().toString().toUpperCase()));
+                    String def = obj.getString(word.getText().toString().toUpperCase());
+                        words.add(new Word("Go online to see more", def));
+                    Log.v("Result is", def);
+
                 }catch (Exception e){
+                    words.add(new Word("Go online to see more", "No results found"));
                     e.printStackTrace();
                 }
             }else{
                 if(result.equals("[]")){
-                    definition.setText("No Definition Found");
+                    words = new ArrayList<Word>();
+                    words.add(new Word("Error", "No definition found"));
                 }else{
                     words = new ArrayList<Word>();
                     StringBuilder sb = new StringBuilder();
@@ -92,21 +98,19 @@ public class ResultFragment extends Fragment {
                         JSONArray defArr = new JSONArray(result);
                         for(int i=0;i<defArr.length();++i){
                             JSONObject defObj = new JSONObject(defArr.getJSONObject(i).toString());
-                            if (defObj.getString("partOfSpeech").equals("idiom")){
 
-                            }else
                             words.add(new Word(defObj.getString("partOfSpeech"),defObj.getString("text")));
                             Log.v("Expected Result", defObj.getString("partOfSpeech")+", "+defObj.getString("text"));
                         }
-                        WordAdaptor adaptor = new WordAdaptor(words);
-                        rv.setAdapter(adaptor);
-                        LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
-                        rv.setLayoutManager(lmm);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             }
+            WordAdaptor adaptor = new WordAdaptor(words);
+            rv.setAdapter(adaptor);
+            LinearLayoutManager lmm = new LinearLayoutManager(getActivity());
+            rv.setLayoutManager(lmm);
             progressBar.setVisibility(View.INVISIBLE);
         }
         @Override
@@ -114,7 +118,6 @@ public class ResultFragment extends Fragment {
             try{
                 URL url = new URL(param[0]);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                connection.connect();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder sb = new StringBuilder();
                 String line;
