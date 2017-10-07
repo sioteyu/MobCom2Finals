@@ -2,6 +2,7 @@ package com.jograt.atenatics.wordplay_offlinedictionary.utility;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,19 @@ public class WordAdaptor extends RecyclerView.Adapter<WordAdaptor.PersonViewHold
     }
 
     @Override
-    public void onBindViewHolder(WordAdaptor.PersonViewHolder holder, int position) {
+    public void onBindViewHolder(WordAdaptor.PersonViewHolder holder, final int position) {
         holder.description.setText(words.get(position).getDescription());
         holder.part.setText(words.get(position).getPart());
+        holder.cv.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View v) {
+                Log.v("Position", position+"");
+                // etc
+            }
+
+        });
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView){

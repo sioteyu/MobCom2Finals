@@ -33,7 +33,6 @@ import java.util.List;
 public class RandomWordFragment extends Fragment {
     ProgressBar progressBar;
     TextView word;
-    TextView definition;
     List<Word> words;
     RecyclerView rv;
     String uri = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&" +

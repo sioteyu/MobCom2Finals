@@ -6,10 +6,10 @@
                 android:id="@+id/nav_dayword"
                 android:icon="@drawable/ic_whatshot_black_24dp"
                 android:title="Word of the Day" />
-            <!--<item-->
-            <!--android:id="@+id/nav_games"-->
-            <!--android:icon="@drawable/ic_videogame_asset_black_24dp"-->
-            <!--android:title="Games" />-->
+            <item
+            android:id="@+id/nav_games"
+            android:icon="@drawable/ic_videogame_asset_black_24dp"
+            android:title="Games" />
             <item
                 android:id="@+id/nav_random"
                 android:icon="@drawable/ic_shuffle_black_24dp"

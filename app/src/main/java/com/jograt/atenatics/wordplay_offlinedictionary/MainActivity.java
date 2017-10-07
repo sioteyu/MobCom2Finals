@@ -1,6 +1,10 @@
 package com.jograt.atenatics.wordplay_offlinedictionary;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.jograt.atenatics.wordplay_offlinedictionary.utility.notification_reciever;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +42,18 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Notification
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent notificationIntent = new Intent(getApplicationContext(), notification_reciever.class);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.SECOND, 00);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -128,10 +145,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_games) {
-//            new Toast(this).makeText(getApplicationContext(), "Comming Soon", Toast.LENGTH_SHORT).show();
-//        }
-        if (id == R.id.nav_random) {
+        if (id == R.id.nav_games) {
+            setTitle("");
+            GameListFragment gameListFragment = new GameListFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, gameListFragment).commit();
+        }
+        else if (id == R.id.nav_random) {
             setTitle("");
             RandomWordFragment randomFragment = new RandomWordFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
